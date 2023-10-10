@@ -76,7 +76,7 @@ const MainLayoutx = (prop_componen: any) => {
                                         </div>
                                         <div>
                                             <div className="small text-gray-500">December 2, 2019</div>
-                                            Spending Alert: We've noticed unusually high spending for your account.
+                                            Spending Alert: Weve noticed unusually high spending for your account.
                                         </div>
                                     </a>
                                     <a className="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
@@ -97,7 +97,7 @@ const MainLayoutx = (prop_componen: any) => {
                                             <div className="status-indicator bg-success" />
                                         </div>
                                         <div className="font-weight-bold">
-                                            <div className="text-truncate">Hi there! I am wondering if you can help me with a problem I've been
+                                            <div className="text-truncate">Hi there! I am wondering if you can help me with a problem Ive been
                                                 having.</div>
                                             <div className="small text-gray-500">Udin Cilok · 58m</div>
                                         </div>
@@ -109,7 +109,7 @@ const MainLayoutx = (prop_componen: any) => {
                                         </div>
                                         <div>
                                             <div className="text-truncate">Am I a good boy? The reason I ask is because someone told me that people
-                                                say this to all dogs, even if they aren't good...</div>
+                                                say this to all dogs, even if they arent good...</div>
                                             <div className="small text-gray-500">Jaenab · 2w</div>
                                         </div>
                                     </a>
