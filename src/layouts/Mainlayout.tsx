@@ -1,5 +1,6 @@
 import React from 'react';
-import Header from './Sidebar';
+import Header from './Header';
+
 
 interface props_componen {
 
@@ -177,7 +178,7 @@ const MainLayoutx = (prop_componen: any) => {
                                         Activity Log
                                     </a>
                                     <div className="dropdown-divider" />
-                                    <a className="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#logoutModal">
+                                    <a className="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                         <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" />
                                         Logout
                                     </a>
