@@ -1,3 +1,5 @@
+import DataKosong from "@/Componen/DataKosong";
+import LoadingTable from "@/Componen/LoadingTable";
 import baseUrl from "@/config";
 import axios, { AxiosResponse } from "axios";
 import Head from "next/head";
@@ -19,11 +21,20 @@ interface Data {
 }
 const Pendukung: React.FC = () => {
 
+    const [dataKosong, setDataKosong] = useState<boolean>(false);
     const [data, setData] = useState<Data[]>();
+    const [loading, setLoading] = useState<boolean>(false);
     const _getdata = () => {
+        setLoading(true);
         axios.get(baseUrl("pendukung"))
             .then((respon: AxiosResponse<any, any>) => {
+                if (respon.data.length == 0) {
+                    setDataKosong(true);
+                }
                 setData(respon.data);
+                setLoading(false);
+
+
             })
     }
     useEffect(() => {
@@ -62,7 +73,7 @@ const Pendukung: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data?.map((list, index) => (
+                            {loading ? <LoadingTable baris={8} kolom={9} /> : data?.map((list, index) => (
                                 <tr key={`adfad${index}`}>
                                     <td>{index + 1}.</td>
                                     <td>{list.nik}</td>
@@ -76,8 +87,11 @@ const Pendukung: React.FC = () => {
                                 </tr>
                             ))}
 
+
+
                         </tbody>
                     </table>
+                    {dataKosong && <DataKosong />}
                 </div>
             </div>
         </div>
