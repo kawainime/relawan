@@ -12,9 +12,9 @@ const Header: React.FC = () => {
             </a>
             <hr className="sidebar-divider my-0" />
             <li className="nav-item">
-                <a className="nav-link" href="index.html">
+                <Link className="nav-link" href="/">
                     <i className="fas fa-fw fa-tachometer-alt" />
-                    <span>Dashboard</span></a>
+                    <span>Dashboard</span></Link>
             </li>
             <hr className="sidebar-divider" />
             <div className="sidebar-heading">
