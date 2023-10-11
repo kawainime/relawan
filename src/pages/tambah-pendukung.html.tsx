@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import Head from "next/head";
 import { NextRouter, useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import qs from "query-string";
 
 interface inTps {
     id_tps: string,
@@ -51,8 +52,25 @@ const Tambah_relawan: React.FC = () => {
             )
     }
     const _saveData = (e: React.FormEvent) => {
-
         e.preventDefault();
+        axios.post(baseUrl('pendukung/save-pendukung'),
+            qs.stringify({
+                nik: nik,
+                nama: nama,
+                jenis_kelamin: jenis_kelamin,
+                usia: usia,
+                rtrw: rtrw,
+                kelurahan: kelurahan,
+                tps: tps,
+                id_relawan: id_relawan,
+            })
+        ).then((respon: AxiosResponse<any, any>) => {
+            if (respon.data.status == "data_tersimpan") {
+                navigate.push("/data-calon-pendukung.html");
+            }
+        })
+
+
     }
     const _getTps = (id: string) => {
         axios.get(baseUrl(`list-tps/${id}`))
@@ -80,14 +98,14 @@ const Tambah_relawan: React.FC = () => {
                     <h6 className="m-0 font-weight-bold text-primary">Tambah Pendukung</h6>
                 </div>
                 <div className="card-body">
-                    <form>
+                    <form onSubmit={_saveData}>
                         <div className="form-group">
                             <label>NIK</label>
                             <input
                                 onChange={(e) => {
                                     setNik(e.target.value);
                                 }}
-                                required type="tel" className="form-control" placeholder="Nomor KTP" />
+                                required type="number" className="form-control" placeholder="Nomor KTP" />
                             <small id="emailHelp" className="form-text text-muted">Nomor KTP boleh kosong</small>
                         </div>
                         <div className="form-group">
@@ -124,7 +142,7 @@ const Tambah_relawan: React.FC = () => {
                                                 }}
                                                 style={{ width: "100px" }}
                                                 required
-                                                type="tel" className="form-control" placeholder="" />
+                                                type="number" className="form-control" placeholder="" />
                                         </td>
                                         <td> Tahun</td>
                                     </tr>
@@ -161,6 +179,7 @@ const Tambah_relawan: React.FC = () => {
                                             <select
                                                 onChange={(e) => {
                                                     setData_tps([]);
+                                                    setTps("");
                                                     setKelurahan(e.target.value);
 
                                                     _getTps(e.target.value);
@@ -174,7 +193,7 @@ const Tambah_relawan: React.FC = () => {
                                         </td>
                                         <td width={10}></td>
                                         <td style={{ opacity: (data_tps?.length == 0) ? 0.4 : 1 }}>
-                                            <label>Pilih TPS</label>
+                                            <label>Pilih TPS {tps}</label>
                                             <select
                                                 onChange={(e) => {
 

@@ -1,18 +1,34 @@
+import baseUrl from "@/config";
+import axios, { AxiosResponse } from "axios";
 import Head from "next/head";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 
 interface Data {
     id_pendukung: string,
+    nik: string,
     nama: string,
     jenis_kelamin: string
     usia: string,
     rt_rw: string,
+    tps: string,
     kelurahan: string,
+    nama_relawan: string,
     id_relawan: string,
 }
 const Pendukung: React.FC = () => {
+
+    const [data, setData] = useState<Data[]>();
+    const _getdata = () => {
+        axios.get(baseUrl("pendukung"))
+            .then((respon: AxiosResponse<any, any>) => {
+                setData(respon.data);
+            })
+    }
+    useEffect(() => {
+        _getdata();
+    }, [])
 
     return (<>
         <Head>
@@ -32,19 +48,35 @@ const Pendukung: React.FC = () => {
                     <Link className="btn btn-primary" href="/tambah-pendukung.html">Tambah Pendukung</Link>
                     <br /><br />
                     <table className="table table-bordered">
-                        <thead>
+                        <thead style={{ background: "#1783FF", color: "white", fontWeight: "bold" }}>
                             <tr>
-                                <td>No.</td>
-                                <td>NIK</td>
-                                <td>Nama Lengkap</td>
+                                <td>No</td>
+                                <td>Nik</td>
+                                <td>Nama</td>
                                 <td>Jenis Kelamin</td>
                                 <td>Usia</td>
                                 <td>Kelurahan</td>
                                 <td>RT/RW</td>
                                 <td>TPS</td>
-                                <td>RELAWAN</td>
+                                <td>Relawan</td>
                             </tr>
                         </thead>
+                        <tbody>
+                            {data?.map((list, index) => (
+                                <tr>
+                                    <td>{index + 1}.</td>
+                                    <td>{list.nik}</td>
+                                    <td>{list.nama}</td>
+                                    <td>{list.jenis_kelamin}</td>
+                                    <td>{list.usia}</td>
+                                    <td>{list.kelurahan}</td>
+                                    <td>{list.rt_rw}</td>
+                                    <td>{list.tps}</td>
+                                    <td>{list.nama_relawan}</td>
+                                </tr>
+                            ))}
+
+                        </tbody>
                     </table>
                 </div>
             </div>
