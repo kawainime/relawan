@@ -27,7 +27,7 @@ const MainLayoutx = (props_componen: any) => {
                     <div className="container my-auto">
                         <div className="copyright text-center my-auto">
                             <span>copyright ©  - developed by
-                                <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
+                                <b>Azwar Buton</b>
                             </span>
                         </div>
                     </div>
