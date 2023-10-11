@@ -10,12 +10,28 @@ const Header: React.FC = () => {
                 </div>
                 <div className="sidebar-brand-text mx-3">5SHAF</div>
             </Link>
-            <hr className="sidebar-divider my-0" />
+
             <li className="nav-item">
                 <Link className="nav-link" href="/">
                     <i className="fas fa-fw fa-tachometer-alt" />
-                    <span>Dashboard</span></Link>
+                    <span>Dashboard <span style={{ fontSize: "8px" }} className="badge badge-danger">Dev</span></span>
+                </Link>
             </li>
+            <li className="nav-item">
+                <Link className="nav-link" href="/">
+                    <i className="fas fa-fw fa-tachometer-alt" />
+                    <span>Data Statistik <span style={{ fontSize: "8px" }} className="badge badge-danger">Dev</span></span>
+                </Link>
+
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link" href="/">
+                    <i className="fas fa-fw fa-tachometer-alt" />
+                    <span>Data Report <span style={{ fontSize: "8px" }} className="badge badge-danger">Dev</span></span>
+                </Link>
+            </li>
+
+
             <hr className="sidebar-divider" />
             <div className="sidebar-heading">
                 Features

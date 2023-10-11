@@ -54,10 +54,26 @@ const Pendukung: React.FC = () => {
                 </ol>
             </div>
             <div className="card">
+                <div className="card-header">
+                    <table width={"100%"}>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <Link className="btn btn-primary" href="/tambah-pendukung.html">Tambah Pendukung</Link>
+                                </td>
+                                <td>
+                                    <input placeholder="Masukkan pencarian..." type="search" className="form-control" />
+                                </td>
+                                <td style={{ textAlign: "right" }}>Jumlah Data : {data?.length} | Jumlah Laki-laki : | Jumlah Permepuan</td>
 
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
                 <div className="card-body">
-                    <Link className="btn btn-primary" href="/tambah-pendukung.html">Tambah Pendukung</Link>
-                    <br /><br />
+
+
                     <table className="table table-bordered">
                         <thead style={{ background: "#1783FF", color: "white", fontWeight: "bold" }}>
                             <tr>
@@ -74,17 +90,28 @@ const Pendukung: React.FC = () => {
                         </thead>
                         <tbody>
                             {loading ? <LoadingTable baris={8} kolom={9} /> : data?.map((list, index) => (
-                                <tr key={`adfad${index}`}>
-                                    <td>{index + 1}.</td>
-                                    <td>{list.nik}</td>
-                                    <td>{list.nama}</td>
-                                    <td>{list.jenis_kelamin}</td>
-                                    <td>{list.usia}</td>
-                                    <td>{list.kelurahan}</td>
-                                    <td>{list.rt_rw}</td>
-                                    <td>{list.tps}</td>
-                                    <td>{list.nama_relawan}</td>
-                                </tr>
+                                <>
+                                    <tr key={`adfad${index}`}>
+                                        <td>{index + 1}.</td>
+                                        <td>{list.nik}</td>
+                                        <td>{list.nama}</td>
+                                        <td>{list.jenis_kelamin}</td>
+                                        <td>{list.usia}</td>
+                                        <td>{list.kelurahan}</td>
+                                        <td>{list.rt_rw}</td>
+                                        <td>{list.tps}</td>
+                                        <td>{list.nama_relawan}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={9} style={{ textAlign: "center" }}>
+                                            Opsi Menu :
+                                            <button className="btn btn-danger"><i className="fa fa-trash" /> Hapus</button>
+                                            {" "}
+                                            <button className="btn btn-warning"><i className="fa fa-edit" /> Edit</button>
+                                        </td>
+                                    </tr>
+                                </>
+
                             ))}
 
 
