@@ -15,6 +15,7 @@ interface DataRelawan {
     nama: string,
     alamat: string,
     no_handphone: string,
+    jumlah_pendukung: string,
 }
 const Data_relawan: React.FC = (pr) => {
     const navigator: NextRouter = useRouter();
@@ -84,7 +85,9 @@ const Data_relawan: React.FC = (pr) => {
                                     no_handphone={list.no_handphone}
                                 /> : <tr key={`ind${index}`}>
                                     <td>{index + 1}</td>
-                                    <td>{list.nama}</td>
+                                    <td>{list.nama}
+                                        <div style={{ color: "blue" }}>Jumlah Pendukung : {list.jumlah_pendukung} </div>
+                                    </td>
                                     <td>{list.no_handphone}</td>
                                     <td>{list.alamat}</td>
                                     <td style={{ textAlign: "right" }}>

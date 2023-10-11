@@ -72,6 +72,9 @@ const Data_tps: React.FC = () => {
                                                 }}
                                                 className="btn btn-success">TPS Generator</button>
                                             {" "}
+                                            <button onClick={() => {
+                                                navigator.push("/tambah-1-tps.html?id_kelurahan=" + list.id_kelurahan);
+                                            }} className="btn btn-primary">Tambah 1 TPS</button>
 
                                         </td>
                                     </tr>
