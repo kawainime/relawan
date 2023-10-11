@@ -2,10 +2,13 @@ import LoadingTable from "@/Componen/LoadingTable";
 import Edit_relawan from "@/Componen/edit-relawan";
 import baseUrl from "@/config";
 import axios, { AxiosResponse } from "axios";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
+
 
 interface DataRelawan {
     id_relawan: string,
@@ -13,7 +16,7 @@ interface DataRelawan {
     alamat: string,
     no_handphone: string,
 }
-const Data_relawan: React.FC = () => {
+const Data_relawan: React.FC = (pr) => {
     const navigator: NextRouter = useRouter();
     const [edit, setEdit] = useState<any>();
     const [reload, setReload] = useState<number>(0);
@@ -59,6 +62,7 @@ const Data_relawan: React.FC = () => {
                     <button onClick={() => {
                         navigator.push("/tambah-data-relawan.html");
                     }} className="btn btn-danger">Tambah Data</button>
+                    <div style={{ textAlign: "right", color: "#8431FD" }}>Jumlah Data : {data?.length}</div>
                     <table className="table">
                         <thead>
                             <tr className="font-weight-bold">
@@ -92,7 +96,9 @@ const Data_relawan: React.FC = () => {
                                         <button onClick={() => {
                                             hapus(list.id_relawan);
                                         }} className="btn btn-sm btn-danger">Hapus</button>{" "}
-                                        <button className="btn btn-sm btn-primary">Lihat Data Pendukung</button>
+                                        <button onClick={() => {
+                                            navigator.push("/lihat-pendukung-relawan.html?id_relawan=" + list.id_relawan)
+                                        }} className="btn btn-sm btn-primary">Lihat Data Pendukung</button>
                                     </td>
                                 </tr>
                             ))}
