@@ -14,7 +14,7 @@ export default function Home() {
         <br />
         1. Isi dulu dulu master Data_relawan<br />
         2. di menu tps. untuk menambahkan tps pada kelurahan. pilih  kelurahan yang ingin du buatkan tps nya.<br />
-        3. Isi data
+        3. Isi data calon pendukung.
       </center>
     </>
   )
