@@ -6,7 +6,7 @@ const Header: React.FC = () => {
         <ul className="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
             <Link className="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                 <div className="sidebar-brand-icon">
-                    <img src="img/logo/logo2.png" />
+                    <img src="/aa.jpeg" />
                 </div>
                 <div className="sidebar-brand-text mx-3">5SHAF</div>
             </Link>
