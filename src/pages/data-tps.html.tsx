@@ -1,3 +1,4 @@
+import LoadingTable from "@/Componen/LoadingTable";
 import baseUrl from "@/config";
 import axios, { AxiosResponse } from "axios";
 import Head from "next/head";
@@ -17,10 +18,13 @@ interface data {
 const Data_tps: React.FC = () => {
     let navigator: NextRouter = useRouter();
     const [data, setData] = useState<data[]>();
+    const [loading, setLoading] = useState<boolean>(false);
     const _load = () => {
+        setLoading(true);
         axios.get(baseUrl("get-tps"))
             .then((respon: AxiosResponse<any, any>) => {
                 setData(respon.data);
+                setLoading(false);
             })
     }
     useEffect(() => {
@@ -51,7 +55,7 @@ const Data_tps: React.FC = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data?.map((list, index) => (
+                                {loading ? <LoadingTable baris={10} kolom={3} /> : data?.map((list, index) => (
                                     <tr key={`dadf${index}`}>
                                         <td>{index + 1}</td><td>{list.kelurahan}
                                             <div>

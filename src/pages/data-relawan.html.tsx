@@ -1,3 +1,4 @@
+import LoadingTable from "@/Componen/LoadingTable";
 import Edit_relawan from "@/Componen/edit-relawan";
 import baseUrl from "@/config";
 import axios, { AxiosResponse } from "axios";
@@ -17,10 +18,13 @@ const Data_relawan: React.FC = () => {
     const [edit, setEdit] = useState<any>();
     const [reload, setReload] = useState<number>(0);
     const [data, setData] = useState<DataRelawan[]>();
+    const [loading, setLoading] = useState<boolean>(false);
     const _getData = () => {
+        setLoading(true);
         axios.get(baseUrl('relawan'))
             .then((respon) => {
                 setData(respon.data.data);
+                setLoading(false);
             })
     }
     useEffect(() => {
@@ -66,7 +70,7 @@ const Data_relawan: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data?.map((list, index) => (
+                            {loading ? <LoadingTable baris={10} kolom={5} /> : data?.map((list, index) => (
                                 edit == list.id_relawan ? <Edit_relawan
                                     key={`sd${index}`}
                                     reload={{ reload, setReload, setEdit }}
