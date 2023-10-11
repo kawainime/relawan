@@ -8,7 +8,7 @@ const Header: React.FC = () => {
                 <div className="sidebar-brand-icon">
                     <img src="img/logo/logo2.png" />
                 </div>
-                <div className="sidebar-brand-text mx-3">RuangAdmin</div>
+                <div className="sidebar-brand-text mx-3">5SHAF</div>
             </Link>
             <hr className="sidebar-divider my-0" />
             <li className="nav-item">
