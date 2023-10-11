@@ -63,7 +63,7 @@ const Pendukung: React.FC = () => {
                         </thead>
                         <tbody>
                             {data?.map((list, index) => (
-                                <tr>
+                                <tr key={`adfad${index}`}>
                                     <td>{index + 1}.</td>
                                     <td>{list.nik}</td>
                                     <td>{list.nama}</td>
