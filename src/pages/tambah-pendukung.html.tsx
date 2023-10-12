@@ -4,11 +4,13 @@ import Head from "next/head";
 import { NextRouter, useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import qs from "query-string";
-
+import Select, { SingleValue } from 'react-select'
+import { vl } from "@/interface/value";
 interface inTps {
     id_tps: string,
     tps: string
 }
+
 interface inKelurahan {
     id_kelurahan: string,
     kelurahan: string,
@@ -35,6 +37,7 @@ const Tambah_relawan: React.FC = () => {
     const [data_tps, setData_tps] = useState<inTps[]>([]);
     const [dataKelurahan, setDataKelurahan] = useState<inKelurahan[]>();
 
+    const [dsRelawan, setDsRelawan] = useState<vl[]>([]);
     const simpan_data = () => {
 
     }
@@ -48,8 +51,15 @@ const Tambah_relawan: React.FC = () => {
         axios.get(baseUrl("relawan"))
             .then((respon: AxiosResponse<any, any>) => {
                 setDataRelawan(respon.data.data);
-            }
-            )
+                const c: any = [];
+                respon.data.data.map((list: any, index: any) => {
+                    c.push({
+                        value: list.id_relawan,
+                        label: list.nama
+                    })
+                });
+                setDsRelawan(c);
+            })
     }
     const _saveData = (e: React.FormEvent) => {
         e.preventDefault();
@@ -66,6 +76,7 @@ const Tambah_relawan: React.FC = () => {
             })
         ).then((respon: AxiosResponse<any, any>) => {
             if (respon.data.status == "data_tersimpan") {
+                alert("Data berhasil di simpan")
                 navigate.push("/data-calon-pendukung.html");
             }
         })
@@ -82,6 +93,8 @@ const Tambah_relawan: React.FC = () => {
     useEffect(() => {
         _getKelurahan();
         _getRelawan();
+
+
     }, [])
 
     return (<>
@@ -214,20 +227,9 @@ const Tambah_relawan: React.FC = () => {
                         </div>
                         <div className="form-group">
                             <label>Nama Relawan</label>
-
-                            <select
-                                onChange={(e) => {
-                                    setId_relawan(e.target.value);
-
-                                }}
-                                required className="form-control">
-                                <option value={""}>Pilih Relawan</option>
-                                {dataRelawan?.map((list, index) => (
-                                    <option key={`klfdsf${index}`} value={list.id_relawan}>{list.nama}</option>
-                                ))}
-                            </select>
-
-
+                            <Select placeholder="Pilih Relawan" required onChange={(e: SingleValue<vl>) => {
+                                setId_relawan(e?.value)
+                            }} options={dsRelawan} />
                         </div>
                         <button type="submit" className="btn btn-primary">Simpan</button>
                     </form>

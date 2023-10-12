@@ -120,6 +120,11 @@ const Pendukung: React.FC = () => {
                                         setCari(e.target.value);
                                     }} placeholder="Cari nama, relawan, kelurahan , tps" type="search" className="form-control" />
                                 </td>
+                                <td>
+                                    <select className="form-control">
+                                        <option value="">By Kelurahan</option>
+                                    </select>
+                                </td>
                                 <td style={{ textAlign: "right" }}>Jumlah Data : {data?.length} | Jumlah Laki-laki : | Jumlah Permepuan</td>
 
                             </tr>
