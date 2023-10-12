@@ -47,10 +47,14 @@ const Pendukung: React.FC = () => {
     const [tps, setTps] = useState<inTps[]>([]);
     const [pilihTps, setPilihTps] = useState<string>();
     const [cari, setCari] = useState<string>('');
+    const [jLaki_laki, setJLaki_laki] = useState<string>('');
+    const [jperempuan, setJPerempuan] = useState<string>('');
     const _batal = () => {
         setEdit("");
     }
     const _lihatByKelurahan = (id: string) => {
+        setJLaki_laki('')
+        setJPerempuan('')
         if (id == "") {
             setTps([]);
             setReload(reload + 1)
@@ -74,12 +78,16 @@ const Pendukung: React.FC = () => {
     }
     const _getdata = () => {
         setLoading(true);
+        setJLaki_laki('')
+        setJPerempuan('')
         axios.get(baseUrl("pendukung"))
             .then((respon: AxiosResponse<any, any>) => {
                 if (respon.data.length == 0) {
                     setDataKosong(true);
                 }
-                setData(respon.data);
+                setData(respon.data.pendukung);
+                setJLaki_laki(respon.data.laki_laki)
+                setJPerempuan(respon.data.perempuan)
                 setLoading(false);
 
 
@@ -162,7 +170,7 @@ const Pendukung: React.FC = () => {
 
                                 </td>
 
-                                <td style={{ textAlign: "right" }}>Jumlah Data : {data?.length} | Jumlah Laki-laki : | Jumlah Permepuan</td>
+                                <td style={{ textAlign: "right" }}>Jumlah Data : {data?.length} | Jumlah Laki-laki :{jLaki_laki} | Jumlah Permepuan :{jperempuan}</td>
 
                             </tr>
                         </tbody>
