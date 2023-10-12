@@ -27,7 +27,7 @@ export interface inRelawan {
     nama: string,
 }
 interface inKelurahan {
-    id_kelurahan: string, kelurahan: string,
+    id_kelurahan: string, kelurahan: string, pendukung: string,
 }
 const Pendukung: React.FC = () => {
 
@@ -120,9 +120,13 @@ const Pendukung: React.FC = () => {
                                         setCari(e.target.value);
                                     }} placeholder="Cari nama, relawan, kelurahan , tps" type="search" className="form-control" />
                                 </td>
+                                <td> &nbsp;</td>
                                 <td>
                                     <select className="form-control">
                                         <option value="">By Kelurahan</option>
+                                        {dataKelurahan.map((list, index) => (
+                                            <option value={list.id_kelurahan}>{list.kelurahan} ({list.pendukung})</option>
+                                        ))}
                                     </select>
                                 </td>
                                 <td style={{ textAlign: "right" }}>Jumlah Data : {data?.length} | Jumlah Laki-laki : | Jumlah Permepuan</td>
