@@ -54,6 +54,8 @@ const Pendukung: React.FC = () => {
     }
     const _lihatByKelurahan = (id: string) => {
         setJLaki_laki('')
+        setCari('');
+        setCariTps('');
         setJPerempuan('')
         if (id == "") {
             setTps([]);
@@ -77,6 +79,8 @@ const Pendukung: React.FC = () => {
 
     }
     const _getdata = () => {
+        setCari('');
+        setCariTps('');
         setLoading(true);
         setJLaki_laki('')
         setJPerempuan('')
