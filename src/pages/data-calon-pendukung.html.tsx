@@ -5,7 +5,7 @@ import baseUrl from "@/config";
 import axios, { AxiosResponse } from "axios";
 import Head from "next/head";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 
 interface Data {
@@ -29,9 +29,13 @@ export interface inRelawan {
 interface inKelurahan {
     id_kelurahan: string, kelurahan: string, pendukung: string,
 }
+interface inTps {
+    id_tps: string, tps: string,
+}
 const Pendukung: React.FC = () => {
+    const input_cari = useRef<any>(null);
 
-
+    const [cariTps, setCariTps] = useState<string>('');
     const [dataKosong, setDataKosong] = useState<boolean>(false);
     const [data, setData] = useState<Data[]>();
     const [loading, setLoading] = useState<boolean>(false);
@@ -40,23 +44,33 @@ const Pendukung: React.FC = () => {
     const [reload, setReload] = useState<number>(0);
 
     const [dataRelawan, setDataRelawan] = useState<inRelawan[]>([]);
-
+    const [tps, setTps] = useState<inTps[]>([]);
+    const [pilihTps, setPilihTps] = useState<string>();
     const [cari, setCari] = useState<string>('');
     const _batal = () => {
         setEdit("");
     }
     const _lihatByKelurahan = (id: string) => {
-        setLoading(true);
-        axios.get(baseUrl("get-pendukung-by-kelurahan/" + id))
-            .then((respon: AxiosResponse<any, any>) => {
-                if (respon.data.length == 0) {
-                    setDataKosong(true);
-                }
-                setData(respon.data);
-                setLoading(false);
+        if (id == "") {
+            setTps([]);
+            setReload(reload + 1)
+        }
+        else {
+            setDataKosong(false);
+            setLoading(true);
+            axios.get(baseUrl("get-pendukung-by-kelurahan/" + id))
+                .then((respon: AxiosResponse<any, any>) => {
+                    if (respon.data.length == 0) {
+                        setDataKosong(true);
+                    }
+                    setData(respon.data.pendukung);
+                    setTps(respon.data.tps);
+                    setLoading(false);
 
 
-            })
+                })
+        }
+
     }
     const _getdata = () => {
         setLoading(true);
@@ -129,9 +143,11 @@ const Pendukung: React.FC = () => {
                                     <Link className="btn btn-primary" href="/tambah-pendukung.html">Tambah Pendukung</Link>
                                 </td>
                                 <td>
-                                    <input onChange={(e) => {
-                                        setCari(e.target.value);
-                                    }} placeholder="Cari nama, relawan, kelurahan , tps" type="search" className="form-control" />
+                                    <input
+                                        ref={input_cari}
+                                        onChange={(e) => {
+                                            setCari(e.target.value);
+                                        }} placeholder="Cari nama, relawan, kelurahan , tps" type="search" className="form-control" />
                                 </td>
                                 <td> &nbsp;</td>
                                 <td>
@@ -143,13 +159,21 @@ const Pendukung: React.FC = () => {
                                             <option key={`dafa${index}`} value={list.id_kelurahan}>{list.kelurahan} ({list.pendukung})</option>
                                         ))}
                                     </select>
+
                                 </td>
+
                                 <td style={{ textAlign: "right" }}>Jumlah Data : {data?.length} | Jumlah Laki-laki : | Jumlah Permepuan</td>
 
                             </tr>
                         </tbody>
-
                     </table>
+                    Pilih Tps :
+                    {tps.map((list, index) => (
+                        <button key={`adf${index}`} onClick={() => {
+                            setPilihTps(list.id_tps)
+                            setCariTps(list.tps)
+                        }} style={{ margin: "4px", border: "0px solid #000", ...pilihTps == list.id_tps ? { "background": "#7EF498", } : {} }}>TPS {list.tps}</button>
+                    ))}
                 </div>
                 <div className="card-body">
 
@@ -183,14 +207,16 @@ const Pendukung: React.FC = () => {
                                             nik={list.nik} jenis_kelamin={list.jenis_kelamin}
                                             usia={list.usia} rt_rw={list.rt_rw} id_kelurahan={list.id_kelurahan}
                                             id_relawan={list.id_relawan} tps={list.tps} kelurahan={list.kelurahan}
-                                            data_relawan={dataRelawan} /> : list.nama.toLowerCase().includes(cari.toLowerCase()) ||
+                                            data_relawan={dataRelawan} /> : (list.nama.toLowerCase().includes(cari.toLowerCase()) ||
 
                                                 list.nama_relawan.toLowerCase().includes(cari.toLowerCase()) ||
                                                 list.tps.toString().includes(cari) ||
-                                                list.kelurahan.toLowerCase().includes(cari.toLowerCase()) ||
-                                                list.jenis_kelamin.toLowerCase().includes(cari.toLowerCase())
 
-                                            ? <>
+                                                list.kelurahan.toLowerCase().includes(cari.toLowerCase()) ||
+                                                list.jenis_kelamin.toLowerCase().includes(cari.toLowerCase()))
+
+
+                                            ? list.tps.toString().includes(cariTps) ? <>
                                                 <tr key={`adfad${index}`}>
                                                     <td>{index + 1}.</td>
                                                     <td>{list.nik}</td>
@@ -214,7 +240,7 @@ const Pendukung: React.FC = () => {
                                                         }} className="btn btn-warning"><i className="fa fa-edit" /> Edit</button>
                                                     </td>
                                                 </tr>
-                                            </> : <></>
+                                            </> : <></> : <></>
                                     ))}
                             </tbody>
                         </table>
