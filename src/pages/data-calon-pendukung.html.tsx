@@ -45,6 +45,19 @@ const Pendukung: React.FC = () => {
     const _batal = () => {
         setEdit("");
     }
+    const _lihatByKelurahan = (id: string) => {
+        setLoading(true);
+        axios.get(baseUrl("get-pendukung-by-kelurahan/" + id))
+            .then((respon: AxiosResponse<any, any>) => {
+                if (respon.data.length == 0) {
+                    setDataKosong(true);
+                }
+                setData(respon.data);
+                setLoading(false);
+
+
+            })
+    }
     const _getdata = () => {
         setLoading(true);
         axios.get(baseUrl("pendukung"))
@@ -122,7 +135,9 @@ const Pendukung: React.FC = () => {
                                 </td>
                                 <td> &nbsp;</td>
                                 <td>
-                                    <select className="form-control">
+                                    <select onChange={(e) => {
+                                        _lihatByKelurahan(e.target.value);
+                                    }} className="form-control">
                                         <option value="">By Kelurahan</option>
                                         {dataKelurahan.map((list, index) => (
                                             <option key={`dafa${index}`} value={list.id_kelurahan}>{list.kelurahan} ({list.pendukung})</option>
