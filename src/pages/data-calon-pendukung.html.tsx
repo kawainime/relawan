@@ -125,7 +125,7 @@ const Pendukung: React.FC = () => {
                                     <select className="form-control">
                                         <option value="">By Kelurahan</option>
                                         {dataKelurahan.map((list, index) => (
-                                            <option value={list.id_kelurahan}>{list.kelurahan} ({list.pendukung})</option>
+                                            <option key={`dafa${index}`} value={list.id_kelurahan}>{list.kelurahan} ({list.pendukung})</option>
                                         ))}
                                     </select>
                                 </td>
