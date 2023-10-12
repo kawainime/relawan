@@ -41,6 +41,7 @@ const Pendukung: React.FC = () => {
 
     const [dataRelawan, setDataRelawan] = useState<inRelawan[]>([]);
 
+    const [cari, setCari] = useState<string>('');
     const _batal = () => {
         setEdit("");
     }
@@ -115,7 +116,9 @@ const Pendukung: React.FC = () => {
                                     <Link className="btn btn-primary" href="/tambah-pendukung.html">Tambah Pendukung</Link>
                                 </td>
                                 <td>
-                                    <input placeholder="Masukkan pencarian..." type="search" className="form-control" />
+                                    <input onChange={(e) => {
+                                        setCari(e.target.value);
+                                    }} placeholder="Cari nama, relawan, kelurahan , tps" type="search" className="form-control" />
                                 </td>
                                 <td style={{ textAlign: "right" }}>Jumlah Data : {data?.length} | Jumlah Laki-laki : | Jumlah Permepuan</td>
 
@@ -156,31 +159,38 @@ const Pendukung: React.FC = () => {
                                             nik={list.nik} jenis_kelamin={list.jenis_kelamin}
                                             usia={list.usia} rt_rw={list.rt_rw} id_kelurahan={list.id_kelurahan}
                                             id_relawan={list.id_relawan} tps={list.tps} kelurahan={list.kelurahan}
-                                            data_relawan={dataRelawan} /> : <>
-                                            <tr key={`adfad${index}`}>
-                                                <td>{index + 1}.</td>
-                                                <td>{list.nik}</td>
-                                                <td>{list.nama}</td>
-                                                <td>{list.jenis_kelamin}</td>
-                                                <td>{list.usia}</td>
-                                                <td>{list.kelurahan}</td>
-                                                <td>{list.rt_rw}</td>
-                                                <td>{list.tps}</td>
-                                                <td>{list.nama_relawan}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={9} style={{ textAlign: "center" }}>
-                                                    Opsi Menu :
-                                                    <button onClick={() => {
-                                                        _hapus(list.id_pendukung)
-                                                    }} className="btn btn-danger"><i className="fa fa-trash" /> Hapus</button>
-                                                    {" "}
-                                                    <button onClick={() => {
-                                                        setEdit(list.id_pendukung);
-                                                    }} className="btn btn-warning"><i className="fa fa-edit" /> Edit</button>
-                                                </td>
-                                            </tr>
-                                        </>
+                                            data_relawan={dataRelawan} /> : list.nama.toLowerCase().includes(cari.toLowerCase()) ||
+
+                                                list.nama_relawan.toLowerCase().includes(cari.toLowerCase()) ||
+                                                list.tps.toString().includes(cari) ||
+                                                list.kelurahan.toLowerCase().includes(cari.toLowerCase()) ||
+                                                list.jenis_kelamin.toLowerCase().includes(cari.toLowerCase())
+
+                                            ? <>
+                                                <tr key={`adfad${index}`}>
+                                                    <td>{index + 1}.</td>
+                                                    <td>{list.nik}</td>
+                                                    <td>{list.nama}</td>
+                                                    <td>{list.jenis_kelamin}</td>
+                                                    <td>{list.usia}</td>
+                                                    <td>{list.kelurahan}</td>
+                                                    <td>{list.rt_rw}</td>
+                                                    <td>{list.tps}</td>
+                                                    <td>{list.nama_relawan}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={9} style={{ textAlign: "center" }}>
+                                                        Opsi Menu :
+                                                        <button onClick={() => {
+                                                            _hapus(list.id_pendukung)
+                                                        }} className="btn btn-danger"><i className="fa fa-trash" /> Hapus</button>
+                                                        {" "}
+                                                        <button onClick={() => {
+                                                            setEdit(list.id_pendukung);
+                                                        }} className="btn btn-warning"><i className="fa fa-edit" /> Edit</button>
+                                                    </td>
+                                                </tr>
+                                            </> : <></>
                                     ))}
                             </tbody>
                         </table>
