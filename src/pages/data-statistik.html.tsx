@@ -30,7 +30,7 @@ const Data_statistik: React.FC = () => {
                     <li className="breadcrumb-item active" aria-current="page">Blank Page</li>
                 </ol>
             </div>
-            <div className='col-lg-12'>
+            <div className='col-lg-7'>
                 <div className="card">
                     <div className="card-header">
                         <h5>Data Pementangan Berdasarkan Kelurahan</h5>
@@ -47,7 +47,7 @@ const Data_statistik: React.FC = () => {
                             <tbody>
                                 {data.map((list, index) => (
                                     <tr key={`dc${index}`}>
-                                        <td></td>
+                                        <td>{index + 1}</td>
                                         <td>
                                             <div style={{ width: 50, height: 50 }}>
                                                 <CircularProgressbar
