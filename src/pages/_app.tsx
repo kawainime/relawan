@@ -1,6 +1,7 @@
 
 import MainLayoutx from '@/layouts/Mainlayout'
 import "@/assets/css-import-all.css"
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import type { AppProps } from 'next/app'
 import NextNProgress from 'nextjs-progressbar';
 export default function App({ Component, pageProps }: AppProps) {

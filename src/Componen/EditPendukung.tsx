@@ -110,14 +110,16 @@ const EditPendukung: React.FC<inDataProps> = (props) => {
                 </select>
             </td>
             <td>
-                <input type="text" value={rt_rw} className="form-control" placeholder="04/05" />
+                <input type="text" onChange={(e) => {
+                    setRt_rw(e.target.value)
+                }} value={rt_rw} className="form-control" placeholder="04/05" />
             </td>
 
             <td>
 
                 <select
                     onChange={(e) => {
-                        setTps(e.target.value);
+                        setId_tps(e.target.value);
                     }}
                     value={id_tps} className="form-control">
                     <option value={""}>TPS</option>
