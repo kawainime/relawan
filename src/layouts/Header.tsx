@@ -20,7 +20,7 @@ const Header: React.FC = () => {
             <li className="nav-item">
                 <Link className="nav-link" href="/data-statistik.html">
                     <i className="fas fa-fw fa-tachometer-alt" />
-                    <span>Data Statistik <span style={{ fontSize: "8px" }} className="badge badge-danger">Dev</span></span>
+                    <span>Data Statistik</span>
                 </Link>
 
             </li>
