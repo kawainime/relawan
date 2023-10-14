@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
+import { MDBDataTableV5 } from 'mdbreact';
+import { setTimeout } from 'timers';
+
 interface inDataKel {
     kelurahan: string, dukungan: any,
     perempuan: string, laki_laki: string,
@@ -13,9 +16,30 @@ interface inDataStatistik {
     nama: string, jenis_kelamin: string,
     jumlah: number,
 }
+
+interface dataColumn {
+    label: string,
+    field: string,
+    sort: string
+}
+interface dataRows {
+    no: number,
+    persentase: any,
+    nilai_persentase: any,
+    nama_relawan: string,
+    jumlah_pendukung: any,
+}
+
+interface dataTable {
+    rows: dataRows[],
+    columns: dataColumn[],
+}
 const Data_statistik: React.FC = () => {
+    const [reload, setReload] = useState<number>(0);
     const [data, setData] = useState<inDataKel[]>([]);
-    const [dataRelawan, setDataRelawan] = useState<inDataStatistik[]>([]);
+    const [dataRelawan, setDataRelawan] = useState<dataTable>();
+
+
     const [totalDukungan, setTotalDukungan] = useState<number>(0);
     const [jumlahPendukung, setJumlahPendukung] = useState<number>(0);
     const _dataKelurahan = () => {
@@ -26,15 +50,103 @@ const Data_statistik: React.FC = () => {
     }
     const _getRelawan = () => {
         axios.get(baseUrl("statistik/relawan"))
-            .then((respon: AxiosResponse<any, any>) => {
-                setDataRelawan(respon.data.data);
+            .then((respon: any) => {
+                console.log("pertama");
                 setTotalDukungan(respon.data.total_pendukung);
+                console.log("kedua");
+
+                const datax: any = [];
+                respon.data.data.map((list: inDataStatistik, index: number) => {
+
+
+                    let hasil = 0;
+                    try {
+                        let persentase = ((list.jumlah / totalDukungan) * 100);
+                        if (isFinite(persentase)) {
+                            hasil = persentase;
+                        }
+                    } catch (error) {
+                        let persentase = ((list.jumlah / totalDukungan) * 100);
+                        if (isFinite(persentase)) {
+                            hasil = persentase;
+                        }
+                        console.log('gagal');
+                    }
+
+                    datax.push({
+                        no: index + 1,
+                        persentase: <div style={{ width: 40, height: 40 }}>
+                            <CircularProgressbar
+                                background
+                                backgroundPadding={2}
+                                styles={buildStyles({
+                                    backgroundColor: "#FE3200",
+                                    textColor: "#fff",
+                                    pathColor: "#fff",
+                                    trailColor: "transparent"
+                                })}
+                                strokeWidth={14}
+                                value={hasil} text={`${hasil.toFixed(2)}%`} />
+                        </div>,
+                        nilai_persentase: hasil.toFixed(2) + " %",
+                        nama_relawan: list.nama,
+                        jumlah_pendukung: list.jumlah,
+                    });
+                })
+                console.log("ketiga");
+
+                const datac = {
+                    columns: [
+                        {
+                            label: 'No',
+                            field: 'no',
+                            sort: 'asc',
+                        },
+                        {
+                            label: 'Persentase',
+                            field: 'persentase',
+                            sort: 'asc',
+                        },
+                        {
+                            label: 'Nilai Peresentase(%)',
+                            field: 'nilai_persentase',
+                            sort: 'asc',
+                        },
+                        {
+                            label: 'Nama Relawan',
+                            field: 'nama_relawan',
+                            sort: 'asc',
+                        },
+
+                        {
+                            label: 'Jumlah Pendukung',
+                            field: 'jumlah_pendukung',
+                            sort: 'asc',
+                        },
+                    ],
+                    rows: datax,
+                };
+
+                setDataRelawan(datac);
+                console.log("ke empat");
+                setTimeout(() => {
+                    setReload(reload + 1);
+                }, (1000));
+
+
+
+
             })
     }
     useEffect(() => {
         _dataKelurahan();
-        _getRelawan();
+
     }, [])
+    useEffect(() => {
+        _getRelawan();
+    }, [reload]);
+
+
     return (<>
         <div className="container-fluid" id="container-wrapper">
             <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -46,7 +158,7 @@ const Data_statistik: React.FC = () => {
                 </ol>
             </div>
             <div className='row'>
-                <div className='col-lg-6'>
+                <div className='col-lg-12'>
                     <div className="card">
                         <div className="card-header">
                             <h5>Data Pementangan Berdasarkan Kelurahan</h5>
@@ -89,46 +201,24 @@ const Data_statistik: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className='col-lg-6'>
+                <div className='col-lg-12'>
+                    <br />
+                </div>
+                <div className='col-lg-12'>
                     <div className="card">
                         <div className="card-header">
                             <div><b>Peresentase Berdasarkan Relawan</b></div>
                         </div>
                         <div className="card-body">
-                            <table className='table'>
-                                <thead>
-                                    <tr>
-                                        <td>No</td><td>Peresentase</td><td>Nama Relawan</td><td>Jumlah Pendukung</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {dataRelawan.map((list, index) => (
-                                        <tr key={`fdsa${index}`}>
-                                            <td>{index + 1}</td><td>
-                                                <div style={{ width: "60px" }}>
-                                                    <CircularProgressbar
-                                                        background
-                                                        backgroundPadding={5}
-                                                        styles={buildStyles({
-
-                                                            backgroundColor: "#FD3A4A",
-                                                            textColor: "#fff",
-                                                            pathColor: "#fff",
-                                                            trailColor: "transparent"
-                                                        })}
-                                                        strokeWidth={14}
-                                                        value={((list.jumlah / totalDukungan) * 100)} text={`${((list.jumlah / totalDukungan) * 100).toFixed(2)} %`} />
-                                                </div>
-
-                                            </td><td>{list.nama}</td><td style={{ fontWeight: "bold" }}>{list.jumlah} Pendukung</td>
-                                        </tr>
-                                    ))}
-
-                                </tbody>
-                            </table>
+                            <MDBDataTableV5
+                                data={dataRelawan}
+                                paging={true} // Optional: Enable pagination
+                                searching={true} // Optional: Enable searching
+                            />
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
