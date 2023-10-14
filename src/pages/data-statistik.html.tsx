@@ -117,7 +117,7 @@ const Data_statistik: React.FC = () => {
                                                             trailColor: "transparent"
                                                         })}
                                                         strokeWidth={14}
-                                                        value={((list.jumlah / totalDukungan) * 100)} text={`${((list.jumlah / totalDukungan) * 100).toFixed(0)} %`} />
+                                                        value={((list.jumlah / totalDukungan) * 100)} text={`${((list.jumlah / totalDukungan) * 100).toFixed(2)} %`} />
                                                 </div>
 
                                             </td><td>{list.nama}</td><td style={{ fontWeight: "bold" }}>{list.jumlah} Pendukung</td>
