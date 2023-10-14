@@ -9,16 +9,31 @@ interface inDataKel {
     perempuan: string, laki_laki: string,
     total: any
 }
+interface inDataStatistik {
+    nama: string, jenis_kelamin: string,
+    jumlah: number,
+}
 const Data_statistik: React.FC = () => {
     const [data, setData] = useState<inDataKel[]>([]);
+    const [dataRelawan, setDataRelawan] = useState<inDataStatistik[]>([]);
+    const [totalDukungan, setTotalDukungan] = useState<number>(0);
+    const [jumlahPendukung, setJumlahPendukung] = useState<number>(0);
     const _dataKelurahan = () => {
         axios.get(baseUrl("statistik/kelurahan"))
             .then((respon: AxiosResponse<any, any>) => {
                 setData(respon.data);
             })
     }
+    const _getRelawan = () => {
+        axios.get(baseUrl("statistik/relawan"))
+            .then((respon: AxiosResponse<any, any>) => {
+                setDataRelawan(respon.data.data);
+                setTotalDukungan(respon.data.total_pendukung);
+            })
+    }
     useEffect(() => {
         _dataKelurahan();
+        _getRelawan();
     }, [])
     return (<>
         <div className="container-fluid" id="container-wrapper">
@@ -31,7 +46,7 @@ const Data_statistik: React.FC = () => {
                 </ol>
             </div>
             <div className='row'>
-                <div className='col-lg-7'>
+                <div className='col-lg-6'>
                     <div className="card">
                         <div className="card-header">
                             <h5>Data Pementangan Berdasarkan Kelurahan</h5>
@@ -74,8 +89,11 @@ const Data_statistik: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className='col-lg-5'>
+                <div className='col-lg-6'>
                     <div className="card">
+                        <div className="card-header">
+                            <div><b>Peresentase Berdasarkan Relawan</b></div>
+                        </div>
                         <div className="card-body">
                             <table className='table'>
                                 <thead>
@@ -84,9 +102,28 @@ const Data_statistik: React.FC = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>No</td><td>Peresentase</td><td>Nama Relawan</td><td>Jumlah Pendukung</td>
-                                    </tr>
+                                    {dataRelawan.map((list, index) => (
+                                        <tr key={`fdsa${index}`}>
+                                            <td>{index + 1}</td><td>
+                                                <div style={{ width: "60px" }}>
+                                                    <CircularProgressbar
+                                                        background
+                                                        backgroundPadding={5}
+                                                        styles={buildStyles({
+
+                                                            backgroundColor: "#FD3A4A",
+                                                            textColor: "#fff",
+                                                            pathColor: "#fff",
+                                                            trailColor: "transparent"
+                                                        })}
+                                                        strokeWidth={14}
+                                                        value={(list.jumlah / totalDukungan) * 100} text={`${((list.jumlah / totalDukungan) * 100)} %`} />
+                                                </div>
+
+                                            </td><td>{list.nama}</td><td style={{ fontWeight: "bold" }}>{list.jumlah} Pendukung</td>
+                                        </tr>
+                                    ))}
+
                                 </tbody>
                             </table>
                         </div>
