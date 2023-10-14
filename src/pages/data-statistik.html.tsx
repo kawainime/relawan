@@ -61,12 +61,12 @@ const Data_statistik: React.FC = () => {
 
                     let hasil = 0;
                     try {
-                        let persentase = ((list.jumlah / totalDukungan) * 100);
+                        let persentase = ((list.jumlah / respon.data.total_pendukung) * 100);
                         if (isFinite(persentase)) {
                             hasil = persentase;
                         }
                     } catch (error) {
-                        let persentase = ((list.jumlah / totalDukungan) * 100);
+                        let persentase = ((list.jumlah / respon.data.total_pendukung) * 100);
                         if (isFinite(persentase)) {
                             hasil = persentase;
                         }
@@ -129,11 +129,6 @@ const Data_statistik: React.FC = () => {
 
                 setDataRelawan(datac);
                 console.log("ke empat");
-                setTimeout(() => {
-                    setReload(reload + 1);
-                }, (1000));
-
-
 
 
             })
@@ -143,8 +138,11 @@ const Data_statistik: React.FC = () => {
 
     }, [])
     useEffect(() => {
+
         _getRelawan();
-    }, [reload]);
+
+
+    }, []);
 
 
     return (<>
