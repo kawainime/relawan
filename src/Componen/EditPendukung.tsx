@@ -130,7 +130,9 @@ const EditPendukung: React.FC<inDataProps> = (props) => {
                 </select>
             </td>
             <td>
-                <select value={id_relawan} className="form-control">
+                <select onChange={(e) => {
+                    setId_relawan(e.target.value)
+                }} value={id_relawan} className="form-control">
                     <option value={""}>RELAWAN</option>
                     {props.data_relawan.map((list, index) => (
                         <option key={`3r${index}`} value={list.id_relawan}>{list.nama}</option>
