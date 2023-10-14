@@ -1,10 +1,10 @@
 import baseUrl from "@/config";
 import { inRelawan } from "@/pages/data-calon-pendukung.html";
 import axios, { AxiosResponse } from "axios";
-import { ValueOf } from "next/dist/shared/lib/constants";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
-
+import Select, { SingleValue } from 'react-select'
+import { vl } from "@/interface/value";
 interface inDataKelurahan {
     id_kelurahan: string,
     kelurahan: string
@@ -19,10 +19,14 @@ interface inDataProps {
     id_relawan: string, id_tps: string, tps: string, id_kelurahan: string,
     batal: any,
     reload: any
+    nama_relawan: string,
 
     data_kelurahan: inDataKelurahan[],
     data_relawan: inRelawan[],
 
+}
+interface irRelawan {
+    label: string, value: string
 }
 const EditPendukung: React.FC<inDataProps> = (props) => {
     const [nama, setNama] = useState<string>(props.nama);
@@ -32,15 +36,28 @@ const EditPendukung: React.FC<inDataProps> = (props) => {
     const [usia, setUsia] = useState<string>(props.usia);
     const [rt_rw, setRt_rw] = useState<string>(props.rt_rw);
     const [kelurahan, setKelurahan] = useState<string>(props.id_kelurahan);
-    const [id_relawan, setId_relawan] = useState<string>(props.id_relawan);
+    const [id_relawan, setId_relawan] = useState<any>(props.id_relawan);
     const [tps, setTps] = useState<string>(props.tps);
     const [dataKelurahan, setDataKelurahan] = useState<inDataKelurahan[]>(props.data_kelurahan);
     const [isProses, setIsProses] = useState<boolean>(false);
 
     const [dataTps, setDataTps] = useState<inDataTps[]>([]);
+    const [listRelawan, setListRelawan] = useState<irRelawan[]>([]);
     useEffect(() => {
+        const cdata: any[] = [];
         _getTps();
+        props.data_relawan.map((list, index) => {
+            cdata.push({
+                value: list.id_relawan,
+                label: list.nama
+            })
+        });
+        setListRelawan(cdata);
+
     }, [])
+    function findByKeyAndValue<T>(arr: T[], key: keyof T, value: T[keyof T]): T | undefined {
+        return arr.find(item => item[key] === value);
+    }
     const _getTps = () => {
         axios.get(baseUrl("list-tps/" + props.id_kelurahan))
             .then((respon) => {
@@ -130,15 +147,13 @@ const EditPendukung: React.FC<inDataProps> = (props) => {
                 </select>
             </td>
             <td>
-                <select onChange={(e) => {
-                    setId_relawan(e.target.value)
-                }} value={id_relawan} className="form-control">
-                    <option value={""}>RELAWAN</option>
-                    {props.data_relawan.map((list, index) => (
-                        <option key={`3r${index}`} value={list.id_relawan}>{list.nama}</option>
-                    ))}
+                <Select defaultValue={{
+                    value: id_relawan, label: props.nama_relawan
 
-                </select>
+                }} placeholder="Pilih Relawan" required onChange={(e: SingleValue<vl>) => {
+                    setId_relawan(e?.value);
+                }} options={listRelawan} />
+
             </td>
         </tr>
         <tr>

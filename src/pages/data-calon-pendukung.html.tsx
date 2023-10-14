@@ -216,6 +216,7 @@ const Pendukung: React.FC = () => {
                                             id_tps={list.id_tps}
                                             data_kelurahan={dataKelurahan}
                                             nama={list.nama}
+                                            nama_relawan={list.nama_relawan}
                                             nik={list.nik} jenis_kelamin={list.jenis_kelamin}
                                             usia={list.usia} rt_rw={list.rt_rw} id_kelurahan={list.id_kelurahan}
                                             id_relawan={list.id_relawan} tps={list.tps} kelurahan={list.kelurahan}
