@@ -2,6 +2,8 @@ import baseUrl from "@/config";
 import axios, { Axios, AxiosResponse } from "axios";
 import { MDBDataTableV5 } from "mdbreact";
 import React, { useEffect, useState } from "react";
+import LoadingSpinner from '../LoadingSpinner';
+import styles from '@/styles/Home.module.css';
 
 
 interface columnTable {
@@ -20,9 +22,12 @@ interface dataTable {
 }
 const Semua_data: React.FC = () => {
     const [data, setData] = useState<dataTable>();
+    const [loading, setLoading] = useState<boolean>(false);
     const _getData = () => {
+        setLoading(true);
         axios.get(baseUrl('pendukung'))
             .then((respon: AxiosResponse<any, any>) => {
+                setLoading(false);
                 const temp_data: any = [];
                 console.log(respon.data.pendukung);
                 respon.data.pendukung.map((list: rowTable, index: any) => {
@@ -100,6 +105,10 @@ const Semua_data: React.FC = () => {
             paging={true} // Optional: Enable pagination
             searching={true} // Optional: Enable searching
         />
+        {loading && <div style={{ textAlign: "center" }}>
+            <LoadingSpinner />
+            <br />
+            Mengmbail data...</div>}
     </>);
 }
 
