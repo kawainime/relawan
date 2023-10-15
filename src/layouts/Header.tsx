@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
-
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 const Header: React.FC = () => {
     return (<>
         <ul className="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
@@ -25,7 +26,7 @@ const Header: React.FC = () => {
 
             </li>
             <li className="nav-item">
-                <Link className="nav-link" href="/">
+                <Link className="nav-link" href="/data-report.html">
                     <i className="fas fa-fw fa-tachometer-alt" />
                     <span>Data Report <span style={{ fontSize: "8px" }} className="badge badge-danger">Dev</span></span>
                 </Link>

@@ -35,6 +35,7 @@ interface inTps {
 const Pendukung: React.FC = () => {
     const input_cari = useRef<any>(null);
 
+    const [dataFilter, setDataFilter] = useState<Data[]>();
     const [cariTps, setCariTps] = useState<string>('');
     const [dataKosong, setDataKosong] = useState<boolean>(false);
     const [data, setData] = useState<Data[]>();
@@ -70,6 +71,7 @@ const Pendukung: React.FC = () => {
                         setDataKosong(true);
                     }
                     setData(respon.data.pendukung);
+                    setDataFilter(respon.data.pendukung);
                     setTps(respon.data.tps);
                     setLoading(false);
 
@@ -78,6 +80,14 @@ const Pendukung: React.FC = () => {
         }
 
     }
+    const _handleSearch = (search: string) => {
+        const filtered = data?.filter((row) =>
+            row.nama.toLocaleLowerCase().includes(search.toLowerCase())
+
+        );
+        setDataFilter(filtered);
+    }
+
     const _getdata = () => {
         setCari('');
         setCariTps('');
@@ -90,8 +100,9 @@ const Pendukung: React.FC = () => {
                     setDataKosong(true);
                 }
                 setData(respon.data.pendukung);
-                setJLaki_laki(respon.data.laki_laki)
-                setJPerempuan(respon.data.perempuan)
+                setDataFilter(respon.data.pendukung);
+                setJLaki_laki(respon.data.laki_laki);
+                setJPerempuan(respon.data.perempuan);
                 setLoading(false);
 
 
@@ -136,7 +147,7 @@ const Pendukung: React.FC = () => {
 
     return (<>
         <Head>
-            <title>Data Calon Pendukung</title>
+            <title>{cariTps}Data Calon Pendukung</title>
         </Head>
         <div className="container-fluid" id="container-wrapper">
             <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -158,7 +169,7 @@ const Pendukung: React.FC = () => {
                                     <input
                                         ref={input_cari}
                                         onChange={(e) => {
-                                            setCari(e.target.value);
+                                            _handleSearch(e.target.value);
                                         }} placeholder="Cari nama, relawan, kelurahan , tps" type="search" className="form-control" />
                                 </td>
                                 <td> &nbsp;</td>
@@ -184,6 +195,10 @@ const Pendukung: React.FC = () => {
                         <button key={`adf${index}`} onClick={() => {
                             setPilihTps(list.id_tps)
                             setCariTps(list.tps)
+                            const datax = data?.filter((row) =>
+                                row.tps == list.tps
+                            )
+                            setDataFilter(datax);
                         }} style={{ margin: "4px", border: "0px solid #000", ...pilihTps == list.id_tps ? { "background": "#7EF498", } : {} }}>TPS {list.tps}</button>
                     ))}
                 </div>
@@ -207,7 +222,7 @@ const Pendukung: React.FC = () => {
                             <tbody>
                                 {loading ? <LoadingTable baris={8} kolom={9} /> :
 
-                                    data?.map((list, index) => (
+                                    dataFilter?.map((list, index) => (
                                         edit == list.id_pendukung ? <EditPendukung
                                             key={index}
                                             id_pendukung={list.id_pendukung}
@@ -220,40 +235,31 @@ const Pendukung: React.FC = () => {
                                             nik={list.nik} jenis_kelamin={list.jenis_kelamin}
                                             usia={list.usia} rt_rw={list.rt_rw} id_kelurahan={list.id_kelurahan}
                                             id_relawan={list.id_relawan} tps={list.tps} kelurahan={list.kelurahan}
-                                            data_relawan={dataRelawan} /> : (list.nama.toLowerCase().includes(cari.toLowerCase()) ||
-
-                                                list.nama_relawan.toLowerCase().includes(cari.toLowerCase()) ||
-                                                list.tps.toString().includes(cari) ||
-
-                                                list.kelurahan.toLowerCase().includes(cari.toLowerCase()) ||
-                                                list.jenis_kelamin.toLowerCase().includes(cari.toLowerCase()))
-
-
-                                            ? list.tps.toString().includes(cariTps) ? <>
-                                                <tr key={`adfad${index}`}>
-                                                    <td>{index + 1}.</td>
-                                                    <td>{list.nik}</td>
-                                                    <td>{list.nama}</td>
-                                                    <td>{list.jenis_kelamin}</td>
-                                                    <td>{list.usia}</td>
-                                                    <td>{list.kelurahan}</td>
-                                                    <td>{list.rt_rw}</td>
-                                                    <td>{list.tps}</td>
-                                                    <td>{list.nama_relawan}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={9} style={{ textAlign: "center" }}>
-                                                        Opsi Menu :
-                                                        <button onClick={() => {
-                                                            _hapus(list.id_pendukung)
-                                                        }} className="btn btn-danger"><i className="fa fa-trash" /> Hapus</button>
-                                                        {" "}
-                                                        <button onClick={() => {
-                                                            setEdit(list.id_pendukung);
-                                                        }} className="btn btn-warning"><i className="fa fa-edit" /> Edit</button>
-                                                    </td>
-                                                </tr>
-                                            </> : <></> : <></>
+                                            data_relawan={dataRelawan} /> : <>
+                                            <tr key={`adfad${index}`}>
+                                                <td>{index + 1}.</td>
+                                                <td>{list.nik}</td>
+                                                <td>{list.nama}</td>
+                                                <td>{list.jenis_kelamin}</td>
+                                                <td>{list.usia}</td>
+                                                <td>{list.kelurahan}</td>
+                                                <td>{list.rt_rw}</td>
+                                                <td>{list.tps}</td>
+                                                <td>{list.nama_relawan}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan={9} style={{ textAlign: "center" }}>
+                                                    Opsi Menu :
+                                                    <button onClick={() => {
+                                                        _hapus(list.id_pendukung)
+                                                    }} className="btn btn-danger"><i className="fa fa-trash" /> Hapus</button>
+                                                    {" "}
+                                                    <button onClick={() => {
+                                                        setEdit(list.id_pendukung);
+                                                    }} className="btn btn-warning"><i className="fa fa-edit" /> Edit</button>
+                                                </td>
+                                            </tr>
+                                        </>
                                     ))}
                             </tbody>
                         </table>
