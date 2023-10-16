@@ -1,4 +1,5 @@
 import DataKosong from "@/Componen/DataKosong";
+import LoadingSpinner from "@/Componen/LoadingSpinner";
 import baseUrl from "@/config";
 import axios, { AxiosResponse } from "axios";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
@@ -31,19 +32,20 @@ const Lihat_pendukung_relawan: React.FC<inProps> = (props) => {
     const navigation = useRouter();
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [dataKosong, setDataKosong] = useState<boolean>();
+    const [dataKosong, setDataKosong] = useState<boolean>(false);
     const [data, setData] = useState<inData[]>();
     const [relawan, setRelawan] = useState<inData>();
     const get_data = () => {
         setLoading(true)
         axios.get(baseUrl("lihat-pendukung-relawan/" + props.url_data.id_relawan))
             .then((respon: AxiosResponse<any, any>) => {
-                setLoading(false);
+
                 if (respon.data.data.length == 0) {
                     setDataKosong(true);
                 }
                 setData(respon.data.data);
                 setRelawan(respon.data.relawan);
+                setLoading(false);
             });
     }
     useEffect(() => {
@@ -95,6 +97,12 @@ const Lihat_pendukung_relawan: React.FC<inProps> = (props) => {
                                 ))}
                             </tbody>
                         </table>
+                        {loading &&
+                            <center>
+                                <LoadingSpinner />
+                                <div>Mengambil data...</div>
+                            </center>
+                        }
                         {dataKosong && <DataKosong />}
                     </div>
                 </div>

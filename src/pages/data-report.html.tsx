@@ -1,4 +1,5 @@
 import Semua_data from "@/Componen/report/SemuaData";
+import Semua_relawan from "@/Componen/report/SemuaRelawan";
 import Link from "next/link";
 import React from "react";
 import { Tab, Tabs } from "react-bootstrap";
@@ -25,7 +26,7 @@ const Data_report: React.FC = () => {
                             <Semua_data />
                         </Tab>
                         <Tab eventKey="semuas" title="Data Relawan">
-                            df
+                            <Semua_relawan />
                         </Tab>
                         <Tab eventKey="semuaf" title="Data Pendukung Per Kelurahan">
                             fdf

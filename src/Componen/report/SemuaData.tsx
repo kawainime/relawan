@@ -100,6 +100,7 @@ const Semua_data: React.FC = () => {
         _getData();
     }, [])
     return (<>
+        <h4>Data Semua Pendukung</h4>
         <MDBDataTableV5
             data={data}
             paging={true} // Optional: Enable pagination
