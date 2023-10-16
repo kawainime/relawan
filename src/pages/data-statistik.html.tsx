@@ -6,6 +6,7 @@ import 'react-circular-progressbar/dist/styles.css';
 
 import { MDBDataTableV5 } from 'mdbreact';
 import { setTimeout } from 'timers';
+import LoadingSpinner from '@/Componen/LoadingSpinner';
 
 interface inDataKel {
     kelurahan: string, dukungan: any,
@@ -34,23 +35,37 @@ interface dataTable {
     rows: dataRows[],
     columns: dataColumn[],
 }
+interface ifLoading {
+    loading1?: boolean,
+    loading2?: boolean,
+}
 const Data_statistik: React.FC = () => {
     const [reload, setReload] = useState<number>(0);
     const [data, setData] = useState<inDataKel[]>([]);
     const [dataRelawan, setDataRelawan] = useState<dataTable>();
+    const [loading, setLoading] = useState<ifLoading>();
 
 
     const [totalDukungan, setTotalDukungan] = useState<number>(0);
     const [jumlahPendukung, setJumlahPendukung] = useState<number>(0);
     const _dataKelurahan = () => {
+        setLoading({
+            loading1: true,
+        });
         axios.get(baseUrl("statistik/kelurahan"))
             .then((respon: AxiosResponse<any, any>) => {
                 setData(respon.data);
+                setLoading({
+                    loading1: false,
+                });
             })
     }
     const _getRelawan = () => {
         axios.get(baseUrl("statistik/relawan"))
             .then((respon: any) => {
+                setLoading({
+                    loading2: true,
+                });
                 console.log("pertama");
                 setTotalDukungan(respon.data.total_pendukung);
                 console.log("kedua");
@@ -128,7 +143,10 @@ const Data_statistik: React.FC = () => {
                 };
 
                 setDataRelawan(datac);
-                console.log("ke empat");
+
+                setLoading({
+                    loading2: false,
+                });
 
 
             })
@@ -196,6 +214,12 @@ const Data_statistik: React.FC = () => {
                                 </tbody>
 
                             </table>
+                            {loading?.loading1 && <>
+                                <center>
+                                    <LoadingSpinner /><br />
+                                    Mengambil data...
+                                </center>
+                            </>}
                         </div>
                     </div>
                 </div>
@@ -213,6 +237,12 @@ const Data_statistik: React.FC = () => {
                                 paging={true} // Optional: Enable pagination
                                 searching={true} // Optional: Enable searching
                             />
+                            {loading?.loading2 && <>
+                                <center>
+                                    <LoadingSpinner /><br />
+                                    Mengambil data...
+                                </center>
+                            </>}
                         </div>
                     </div>
                 </div>
