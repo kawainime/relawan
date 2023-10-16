@@ -43,29 +43,24 @@ const Data_statistik: React.FC = () => {
     const [reload, setReload] = useState<number>(0);
     const [data, setData] = useState<inDataKel[]>([]);
     const [dataRelawan, setDataRelawan] = useState<dataTable>();
-    const [loading, setLoading] = useState<ifLoading>();
-
+    const [loading, setLoading] = useState(false);
+    const [loading2, setLoading2] = useState(false);
 
     const [totalDukungan, setTotalDukungan] = useState<number>(0);
     const [jumlahPendukung, setJumlahPendukung] = useState<number>(0);
     const _dataKelurahan = () => {
-        setLoading({
-            loading1: true,
-        });
+        setLoading(true)
         axios.get(baseUrl("statistik/kelurahan"))
             .then((respon: AxiosResponse<any, any>) => {
                 setData(respon.data);
-                setLoading({
-                    loading1: false,
-                });
+                setLoading(false);
             })
     }
     const _getRelawan = () => {
+        setLoading2(true)
         axios.get(baseUrl("statistik/relawan"))
             .then((respon: any) => {
-                setLoading({
-                    loading2: true,
-                });
+
                 console.log("pertama");
                 setTotalDukungan(respon.data.total_pendukung);
                 console.log("kedua");
@@ -141,14 +136,8 @@ const Data_statistik: React.FC = () => {
                     ],
                     rows: datax,
                 };
-
                 setDataRelawan(datac);
-
-                setLoading({
-                    loading2: false,
-                });
-
-
+                setLoading2(false);
             })
     }
     useEffect(() => {
@@ -214,7 +203,7 @@ const Data_statistik: React.FC = () => {
                                 </tbody>
 
                             </table>
-                            {loading?.loading1 && <>
+                            {loading && <>
                                 <center>
                                     <LoadingSpinner /><br />
                                     Mengambil data...
@@ -237,7 +226,7 @@ const Data_statistik: React.FC = () => {
                                 paging={true} // Optional: Enable pagination
                                 searching={true} // Optional: Enable searching
                             />
-                            {loading?.loading2 && <>
+                            {loading2 && <>
                                 <center>
                                     <LoadingSpinner /><br />
                                     Mengambil data...
