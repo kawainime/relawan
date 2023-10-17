@@ -139,7 +139,7 @@ const DataKelurahan: React.FC = () => {
                 <select onChange={_handle} style={{ width: "300px" }} className="form-control">
                     <option>{loadingKelurahan ? "Mengambil data ..." : "Semua Kelurahan"}</option>
                     {data.map((list, index) => (
-                        <option value={list.id_kelurahan}>{list.kelurahan}</option>
+                        <option key={`xadf${index}`} value={list.id_kelurahan}>{list.kelurahan}</option>
                     ))}
                 </select>
                 <br />
@@ -152,6 +152,7 @@ const DataKelurahan: React.FC = () => {
                     }} style={{ fontSize: "12px", ...pilihTps == null && { background: "#6261FB" } }} className="btn btn-sm btn-danger">SEMUA</button>
                     {tps.map((list, index) => (
                         <button
+                            key={`adf${index}`}
                             onClick={() => {
                                 setPilihTps(list.id_tps);
                                 const tmp_data: itDataPendukung[] = [];

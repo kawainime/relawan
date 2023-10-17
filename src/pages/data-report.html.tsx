@@ -1,4 +1,5 @@
 import DataKelurahan from "@/Componen/report/DataKelurahan";
+import Data_pendukungRelawan from "@/Componen/report/PendukungPerlewan";
 import Semua_data from "@/Componen/report/SemuaData";
 import Semua_relawan from "@/Componen/report/SemuaRelawan";
 import Link from "next/link";
@@ -32,8 +33,8 @@ const Data_report: React.FC = () => {
                         <Tab eventKey="semuaf" title="Data Pendukung Per Kelurahan">
                             <DataKelurahan />
                         </Tab>
-                        <Tab eventKey="semuaad" title="Data Pendukung Per Kelurahan">
-                            Data Pendukung Per Relawan
+                        <Tab eventKey="semuaad" title="Data Pendukung Per Rewaln">
+                            <Data_pendukungRelawan />
                         </Tab>
                     </Tabs>
                 </div>
