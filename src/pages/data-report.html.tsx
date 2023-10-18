@@ -1,10 +1,13 @@
 import DataKelurahan from "@/Componen/report/DataKelurahan";
-import Data_pendukungRelawan from "@/Componen/report/PendukungPerlewan";
+import Data_pendukungRelawan from "@/Componen/report/PendukungRelawan";
 import Semua_data from "@/Componen/report/SemuaData";
 import Semua_relawan from "@/Componen/report/SemuaRelawan";
+import baseUrl from "@/config";
+import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
+
 
 const Data_report: React.FC = () => {
 
@@ -20,7 +23,7 @@ const Data_report: React.FC = () => {
             <div className="card">
                 <div className="card-body">
                     <Tabs
-                        defaultActiveKey="semuaf"
+                        defaultActiveKey="semuaad"
                         id="uncontrolled-tab-example"
                         className="mb-3"
                     >
