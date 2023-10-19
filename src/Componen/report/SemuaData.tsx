@@ -104,7 +104,7 @@ const Semua_data: React.FC = () => {
     }, [])
     const _donwloadExcel = () => {
 
-        axios.post(baseUrl("export/download-excel"),
+        axios.post(baseUrl("export/download-excel?name=semua-data-pendukung"),
             queryString.stringify({
                 "data": JSON.stringify(data)
             })
@@ -145,7 +145,7 @@ const Semua_data: React.FC = () => {
             <Modal.Body>
                 Laporan Berhasil di buat.
                 <br />
-                <a href="">Donwload Sekarang</a>
+                <a href={baseUrl("pdf/semua-data-pendukung.xlsx")}>Donwload Sekarang</a>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
