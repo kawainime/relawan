@@ -23,7 +23,7 @@ const Data_report: React.FC = () => {
             <div className="card">
                 <div className="card-body">
                     <Tabs
-                        defaultActiveKey="semuaad"
+                        defaultActiveKey="semuax"
                         id="uncontrolled-tab-example"
                         className="mb-3"
                     >

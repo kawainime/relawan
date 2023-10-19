@@ -1,9 +1,12 @@
 import baseUrl from "@/config";
 import axios, { Axios, AxiosResponse } from "axios";
-import { MDBDataTableV5 } from "mdbreact";
+import { MDBDataTable, MDBDataTableV5 } from "mdbreact";
 import React, { useEffect, useState } from "react";
 import LoadingSpinner from '../LoadingSpinner';
 import styles from '@/styles/Home.module.css';
+import queryString from "query-string";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 
 interface columnTable {
@@ -99,17 +102,59 @@ const Semua_data: React.FC = () => {
     useEffect(() => {
         _getData();
     }, [])
+    const _donwloadExcel = () => {
+
+        axios.post(baseUrl("export/download-excel"),
+            queryString.stringify({
+                "data": JSON.stringify(data)
+            })
+        )
+            .then((respon: AxiosResponse<any, any>) => {
+                console.log(data);
+                handleShow();
+            })
+    }
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     return (<>
+        <div style={{ textAlign: "right", margin: "-10px", paddingRight: "20px" }}>
+            Export File : {" "}
+            <button onClick={() => { _donwloadExcel() }}>Download Excel</button>
+            {" "}
+
+        </div>
+
         <h4>Data Semua Pendukung</h4>
-        <MDBDataTableV5
+
+        <MDBDataTable
             data={data}
-            paging={true} // Optional: Enable pagination
-            searching={true} // Optional: Enable searching
+
         />
         {loading && <div style={{ textAlign: "center" }}>
             <LoadingSpinner />
             <br />
             Mengmbail data...</div>}
+
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Sukses</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                Laporan Berhasil di buat.
+                <br />
+                <a href="">Donwload Sekarang</a>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Tutup
+                </Button>
+
+            </Modal.Footer>
+        </Modal>
+
     </>);
 }
 

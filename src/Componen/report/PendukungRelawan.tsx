@@ -1,9 +1,10 @@
 import baseUrl from "@/config";
-import axios, { AxiosResponse } from "axios";
+import axios, { Axios, AxiosResponse } from "axios";
 import { MDBDataTable } from "mdbreact";
 import React, { FormEvent, useEffect, useState } from "react";
 import Select from 'react-select'
 import { SingleValue } from 'react-select';
+import LoadingSpinner from "../LoadingSpinner";
 interface itData {
     no: number,
     id_relawan: string,
@@ -33,6 +34,7 @@ interface dataTable {
 }
 const Data_pendukungRelawan: React.FC = () => {
 
+    const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<{ value: string, label: string }[]>([]);
     const [dataTable, setDataTable] = useState<dataTable>();
     const _getData = () => {
@@ -50,6 +52,7 @@ const Data_pendukungRelawan: React.FC = () => {
     }
     const _handle = (id: string) => {
 
+        setLoading(true)
         axios.get(baseUrl('report/get-pendukung-relawan/' + id))
             .then((respon: AxiosResponse<any, any>) => {
                 const tmp_data: any = [];
@@ -113,9 +116,10 @@ const Data_pendukungRelawan: React.FC = () => {
                     rows: tmp_data,
                 };
                 setDataTable(data_table);
-
+                setLoading(false)
             })
     }
+
     useEffect(() => {
         _getData();
     }, [])
@@ -136,7 +140,21 @@ const Data_pendukungRelawan: React.FC = () => {
                     </tr>
                 </tbody>
             </table>
-            <MDBDataTable data={dataTable} />
+            {loading && <>
+                <center>
+                    <LoadingSpinner />
+                    <br />
+                    Mengambil data...
+                </center>
+            </>}
+            <div style={{ opacity: loading ? .3 : 1 }}>
+
+                <MDBDataTable data={dataTable} />
+            </div>
+
+            <div>
+
+            </div>
         </div>
     </>);
 }
