@@ -27,6 +27,7 @@ interface dataTable {
     columns: columns[],
 }
 const Semua_relawan: React.FC = () => {
+    const [download, setDownload] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<dataTable>();
     const _getData = () => {
@@ -80,6 +81,7 @@ const Semua_relawan: React.FC = () => {
             })
     }
     const _handleDonwload = () => {
+        setDownload(true);
         axios.post(baseUrl("export-table.php"),
 
             queryString.stringify({
@@ -98,6 +100,7 @@ const Semua_relawan: React.FC = () => {
                 link.href = window.URL.createObjectURL(blob)
                 link.download = 'file.xlsx'
                 link.click()
+                setDownload(false);
             })
     }
     useEffect(() => {
@@ -105,9 +108,9 @@ const Semua_relawan: React.FC = () => {
     }, [])
     return (<>
         <div>
-            <button onClick={() => {
+            {download ? "Memproses..." : <button onClick={() => {
                 _handleDonwload();
-            }}>Download</button>
+            }}>Download</button>}
         </div>
         <h4>Data Semua Relawan</h4>
 

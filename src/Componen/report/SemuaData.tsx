@@ -24,6 +24,7 @@ interface dataTable {
     rows: rowTable[],
 }
 const Semua_data: React.FC = () => {
+    const [isDownload, setIsDownload] = useState<boolean>(false);
     const [data, setData] = useState<dataTable>();
     const [loading, setLoading] = useState<boolean>(false);
     const _getData = () => {
@@ -103,7 +104,7 @@ const Semua_data: React.FC = () => {
         _getData();
     }, [])
     const _donwloadExcel = () => {
-
+        setIsDownload(true)
         axios.post(baseUrl("export-table.php"),
 
             queryString.stringify({
@@ -122,6 +123,7 @@ const Semua_data: React.FC = () => {
                 link.href = window.URL.createObjectURL(blob)
                 link.download = 'file.xlsx'
                 link.click()
+                setIsDownload(false)
             })
     }
 
@@ -132,7 +134,7 @@ const Semua_data: React.FC = () => {
     return (<>
         <div style={{ textAlign: "right", margin: "-10px", paddingRight: "20px" }}>
             Export File : {" "}
-            <button onClick={() => { _donwloadExcel() }}>Download Excel</button>
+            {isDownload ? "Memproses..." : <button onClick={() => { _donwloadExcel() }}>Download Excel</button>}
             {" "}
 
         </div>

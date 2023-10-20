@@ -34,7 +34,7 @@ interface dataTable {
     columns: column[],
 }
 const Data_pendukungRelawan: React.FC = () => {
-
+    const [isDownload, setIsDownload] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<{ value: string, label: string }[]>([]);
     const [dataTable, setDataTable] = useState<dataTable>();
@@ -121,6 +121,7 @@ const Data_pendukungRelawan: React.FC = () => {
             })
     }
     const _handleDonwload = () => {
+        setIsDownload(true);
         axios.post(baseUrl("export-table.php"),
 
             queryString.stringify({
@@ -133,6 +134,7 @@ const Data_pendukungRelawan: React.FC = () => {
 
         )
             .then((respon: AxiosResponse<any, any>) => {
+                setIsDownload(false);
                 const type = respon.headers['content-type']
                 const blob = new Blob([respon.data], { type: type })
                 const link = document.createElement('a')
@@ -161,9 +163,10 @@ const Data_pendukungRelawan: React.FC = () => {
                         </td>
 
                         <td style={{ textAlign: "right" }} width={"70%"}>
-                            <button onClick={() => {
+                            {isDownload ? "Memproses" : <button onClick={() => {
                                 _handleDonwload();
-                            }} className="btn btn-danger">Download</button>
+                            }} className="btn btn-danger">Download</button>}
+
                         </td>
                     </tr>
                 </tbody>

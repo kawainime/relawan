@@ -129,7 +129,9 @@ const DataKelurahan: React.FC = () => {
 
             })
     }
+    const [download, setDownload] = useState<boolean>(false);
     const _handleDonwload = () => {
+        setDownload(true);
         axios.post(baseUrl("export-table.php"),
 
             queryString.stringify({
@@ -148,6 +150,7 @@ const DataKelurahan: React.FC = () => {
                 link.href = window.URL.createObjectURL(blob)
                 link.download = 'file.xlsx'
                 link.click()
+                setDownload(false);
             })
     }
     useEffect(() => {
@@ -208,11 +211,11 @@ const DataKelurahan: React.FC = () => {
 
             </center >
             <br />
-            <button
+            {download ? "Memproses data..." : <button
                 onClick={() => {
                     _handleDonwload();
                 }}
-            >Donwload </button>
+            >Donwload </button>}
 
         </div >
         <hr />
