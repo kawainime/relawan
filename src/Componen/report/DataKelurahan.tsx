@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import { MDBDataTableV5 } from "mdbreact";
 import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../LoadingSpinner";
+import queryString from "query-string";
 
 interface itData {
     id_kelurahan: string,
@@ -128,6 +129,27 @@ const DataKelurahan: React.FC = () => {
 
             })
     }
+    const _handleDonwload = () => {
+        axios.post(baseUrl("export-table.php"),
+
+            queryString.stringify({
+                "data": JSON.stringify(dataPendukungFilter)
+            }),
+
+            {
+                responseType: "arraybuffer",
+            }
+
+        )
+            .then((respon: AxiosResponse<any, any>) => {
+                const type = respon.headers['content-type']
+                const blob = new Blob([respon.data], { type: type })
+                const link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = 'file.xlsx'
+                link.click()
+            })
+    }
     useEffect(() => {
         _getKelurahan();
     }, [])
@@ -186,7 +208,11 @@ const DataKelurahan: React.FC = () => {
 
             </center >
             <br />
-            <button className="btn btn-danger">Tampilkan </button>
+            <button
+                onClick={() => {
+                    _handleDonwload();
+                }}
+            >Donwload </button>
 
         </div >
         <hr />

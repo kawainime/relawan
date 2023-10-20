@@ -104,14 +104,24 @@ const Semua_data: React.FC = () => {
     }, [])
     const _donwloadExcel = () => {
 
-        axios.post(baseUrl("export/download-excel?name=semua-data-pendukung"),
+        axios.post(baseUrl("export-table.php"),
+
             queryString.stringify({
                 "data": JSON.stringify(data)
-            })
+            }),
+
+            {
+                responseType: "arraybuffer",
+            }
+
         )
             .then((respon: AxiosResponse<any, any>) => {
-                console.log(data);
-                handleShow();
+                const type = respon.headers['content-type']
+                const blob = new Blob([respon.data], { type: type })
+                const link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = 'file.xlsx'
+                link.click()
             })
     }
 

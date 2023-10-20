@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import { MDBDataTable, MDBDataTableV5 } from "mdbreact";
 import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../LoadingSpinner";
+import queryString from "query-string";
 
 interface irData {
     nama: string,
@@ -78,11 +79,39 @@ const Semua_relawan: React.FC = () => {
 
             })
     }
+    const _handleDonwload = () => {
+        axios.post(baseUrl("export-table.php"),
+
+            queryString.stringify({
+                "data": JSON.stringify(data)
+            }),
+
+            {
+                responseType: "arraybuffer",
+            }
+
+        )
+            .then((respon: AxiosResponse<any, any>) => {
+                const type = respon.headers['content-type']
+                const blob = new Blob([respon.data], { type: type })
+                const link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = 'file.xlsx'
+                link.click()
+            })
+    }
     useEffect(() => {
         _getData();
     }, [])
     return (<>
+        <div>
+            <button onClick={() => {
+                _handleDonwload();
+            }}>Download</button>
+        </div>
         <h4>Data Semua Relawan</h4>
+
+
         <MDBDataTableV5 paging={true}
             data={data}
             btn={true}

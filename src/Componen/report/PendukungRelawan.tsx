@@ -5,6 +5,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import Select from 'react-select'
 import { SingleValue } from 'react-select';
 import LoadingSpinner from "../LoadingSpinner";
+import queryString from "query-string";
 interface itData {
     no: number,
     id_relawan: string,
@@ -119,13 +120,34 @@ const Data_pendukungRelawan: React.FC = () => {
                 setLoading(false)
             })
     }
+    const _handleDonwload = () => {
+        axios.post(baseUrl("export-table.php"),
+
+            queryString.stringify({
+                "data": JSON.stringify(dataTable)
+            }),
+
+            {
+                responseType: "arraybuffer",
+            }
+
+        )
+            .then((respon: AxiosResponse<any, any>) => {
+                const type = respon.headers['content-type']
+                const blob = new Blob([respon.data], { type: type })
+                const link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = 'file.xlsx'
+                link.click()
+            })
+    }
 
     useEffect(() => {
         _getData();
     }, [])
     return (<>
         <div className="col-lg-12">
-            <table>
+            <table width={"100%"}>
                 <tbody>
                     <tr>
                         <td>
@@ -136,6 +158,12 @@ const Data_pendukungRelawan: React.FC = () => {
                             <Select onChange={(e: any) => {
                                 _handle(e?.value);
                             }} placeholder={"Pilih Data"} options={data} />
+                        </td>
+
+                        <td style={{ textAlign: "right" }} width={"70%"}>
+                            <button onClick={() => {
+                                _handleDonwload();
+                            }} className="btn btn-danger">Download</button>
                         </td>
                     </tr>
                 </tbody>
