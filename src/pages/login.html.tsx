@@ -1,21 +1,12 @@
 import baseUrl from '@/config';
 import axios, { AxiosResponse } from 'axios';
 import Head from 'next/head';
-
 import CryptoJS from 'crypto-js';
-
 import queryString from 'query-string';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
-export const getServerSideProps: GetServerSideProps = async () => {
-    const c = await getData();
-    return {
-        props: {
-            datax: c
-        }
-    }
-}
+
 export const getData = async () => {
     let data = "";
     await axios.get(baseUrl("pubs/token.key")).then((respon: AxiosResponse<any, any>) => {
@@ -28,9 +19,9 @@ interface dataProps {
     datax: string,
 }
 
-const Login: React.FC<dataProps> = (props: dataProps) => {
+const Login: React.FC = () => {
     const route = useRouter();
-    console.log(props.datax);
+
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [readyState, setReadyState] = useState<boolean>(false);
