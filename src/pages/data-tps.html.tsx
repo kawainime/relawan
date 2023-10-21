@@ -1,5 +1,6 @@
 import LoadingTable from "@/Componen/LoadingTable";
 import baseUrl from "@/config";
+import { useMyContext } from "@/interface/myContext";
 import axios, { AxiosResponse } from "axios";
 import Head from "next/head";
 import Link from "next/link";
@@ -16,6 +17,7 @@ interface data {
     tps: data_tps[]
 }
 const Data_tps: React.FC = () => {
+    const { updateMenu } = useMyContext()
     let navigator: NextRouter = useRouter();
     const [data, setData] = useState<data[]>();
     const [loading, setLoading] = useState<boolean>(false);
@@ -28,6 +30,7 @@ const Data_tps: React.FC = () => {
             })
     }
     useEffect(() => {
+        updateMenu("tps")
         _load();
     }, [])
     return (

@@ -1,14 +1,38 @@
-import React, { useContext } from 'react';
+import React, { ReactNode, useContext, useEffect } from 'react';
 import Header from './Header';
 import Nav from './Nav';
+import { createContext } from 'vm';
 
-
+import { useMyContext } from '@/interface/myContext';
+import { NextRouter, useRouter } from 'next/router';
 interface props_componen {
 
     children: React.ReactNode;
 }
-const MainLayoutx = (props_componen: any) => {
+
+const MainLayoutx = (props: props_componen) => {
+    const route: NextRouter = useRouter();
+    const { menu } = useMyContext();
+    const _cekLogin = () => {
+        if (typeof window !== "undefined") {
+            const c = window.localStorage.getItem("data_login");
+            if (c == null) {
+                window.alert("Anda harus login dulu");
+                route.push("/login.html");
+            }
+            else {
+
+            }
+        }
+        else {
+            console.log("und");
+        }
+    }
+    useEffect(() => {
+        _cekLogin();
+    }, [menu]);
     return (<>
+
         <div id="wrapper">
             {/* Sidebar */}
             <Header />
@@ -19,7 +43,7 @@ const MainLayoutx = (props_componen: any) => {
                     <Nav />
                     {/* Topbar */}
                     {/* Container Fluid*/}
-                    {props_componen.children}
+                    {props.children}
                     {/*-Container Fluid*/}
                 </div>
                 {/* Footer */}

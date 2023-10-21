@@ -3,6 +3,7 @@ import Data_pendukungRelawan from "@/Componen/report/PendukungRelawan";
 import Semua_data from "@/Componen/report/SemuaData";
 import Semua_relawan from "@/Componen/report/SemuaRelawan";
 import baseUrl from "@/config";
+import { useMyContext } from "@/interface/myContext";
 import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -10,7 +11,10 @@ import { Tab, Tabs } from "react-bootstrap";
 
 
 const Data_report: React.FC = () => {
-
+    const { updateMenu } = useMyContext();
+    useEffect(() => {
+        updateMenu("report")
+    }, [])
     return (<>
         <div className="container-fluid" id="container-wrapper">
             <div className="d-sm-flex align-items-center justify-content-between mb-4">

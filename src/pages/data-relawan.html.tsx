@@ -1,6 +1,7 @@
 import LoadingTable from "@/Componen/LoadingTable";
 import Edit_relawan from "@/Componen/edit-relawan";
 import baseUrl from "@/config";
+import { useMyContext } from "@/interface/myContext";
 import axios, { AxiosResponse } from "axios";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Head from "next/head";
@@ -18,6 +19,7 @@ interface DataRelawan {
     jumlah_pendukung: string,
 }
 const Data_relawan: React.FC = (pr) => {
+    const { updateMenu } = useMyContext();
     const navigator: NextRouter = useRouter();
     const [edit, setEdit] = useState<any>();
     const [reload, setReload] = useState<number>(0);
@@ -31,6 +33,9 @@ const Data_relawan: React.FC = (pr) => {
                 setLoading(false);
             })
     }
+    useEffect(() => {
+        updateMenu("relawan")
+    }, [])
     useEffect(() => {
         _getData();
     }, [reload])

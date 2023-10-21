@@ -7,6 +7,8 @@ import 'react-circular-progressbar/dist/styles.css';
 import { MDBDataTableV5 } from 'mdbreact';
 import { setTimeout } from 'timers';
 import LoadingSpinner from '@/Componen/LoadingSpinner';
+import { useMyContext } from '@/interface/myContext';
+
 
 interface inDataKel {
     kelurahan: string, dukungan: any,
@@ -40,6 +42,7 @@ interface ifLoading {
     loading2?: boolean,
 }
 const Data_statistik: React.FC = () => {
+    const { updateMenu } = useMyContext();
     const [reload, setReload] = useState<number>(0);
     const [data, setData] = useState<inDataKel[]>([]);
     const [dataRelawan, setDataRelawan] = useState<dataTable>();
@@ -145,7 +148,7 @@ const Data_statistik: React.FC = () => {
 
     }, [])
     useEffect(() => {
-
+        updateMenu("statistik")
         _getRelawan();
 
 

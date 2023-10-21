@@ -2,6 +2,7 @@ import DataKosong from "@/Componen/DataKosong";
 import EditPendukung from "@/Componen/EditPendukung";
 import LoadingTable from "@/Componen/LoadingTable";
 import baseUrl from "@/config";
+import { useMyContext } from "@/interface/myContext";
 import axios, { AxiosResponse } from "axios";
 import Head from "next/head";
 import Link from "next/link";
@@ -33,6 +34,7 @@ interface inTps {
     id_tps: string, tps: string,
 }
 const Pendukung: React.FC = () => {
+    const { updateMenu } = useMyContext();
     const input_cari = useRef<any>(null);
 
     const [dataFilter, setDataFilter] = useState<Data[]>();
@@ -140,7 +142,7 @@ const Pendukung: React.FC = () => {
         _getdata();
     }, [reload])
     useEffect(() => {
-
+        updateMenu("pendukung")
         _getKelurahan();
         _getRelawan();
     }, [])
