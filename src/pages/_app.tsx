@@ -12,8 +12,8 @@ import { MyProvider } from '@/interface/myContext';
 
 
 
-const Admin = dynamic(() => import('@/layouts/Mainlayout'), { ssr: false })
-const Login = dynamic(() => import('@/layouts/LoginComponen'), { ssr: false })
+const Admin = dynamic(() => import('@/layouts/Mainlayout'), { ssr: true })
+const Login = dynamic(() => import('@/layouts/LoginComponen'), { ssr: true })
 export default function App({ Component, pageProps }: AppProps) {
 
 
