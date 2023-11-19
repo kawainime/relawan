@@ -24,7 +24,7 @@ const Login: React.FC = () => {
 
     const [username, setUsername] = useState<string>("admin");
     const [password, setPassword] = useState<string>("admin123");
-    const [readyState, setReadyState] = useState<boolean>(false);
+    const [readyState, setReadyState] = useState<boolean>(true);
     useEffect(() => {
 
     }, [])
