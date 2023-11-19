@@ -22,8 +22,8 @@ interface dataProps {
 const Login: React.FC = () => {
     const route = useRouter();
 
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    const [username, setUsername] = useState<string>("admin");
+    const [password, setPassword] = useState<string>("admin123");
     const [readyState, setReadyState] = useState<boolean>(false);
     useEffect(() => {
 
